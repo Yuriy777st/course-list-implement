@@ -10,7 +10,7 @@
       </div>
       <div class="w-100">
         <div class="title">Course Card Image</div>
-        <img class="image" [src]="course.images[0]" alt="Course image"  />
+        <img class="image" [ngSrc]="course.images[0] || ''" alt="Course image"  width="300" height="300" priority="true" />
       </div>
     </div>
     <div class="col">
