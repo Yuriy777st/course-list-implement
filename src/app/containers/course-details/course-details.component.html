@@ -10,7 +10,7 @@
       </div>
       <div class="w-100">
         <div class="title">Course Card Image</div>
-        <img class="image" [ngSrc]="course.images[0] || ''" alt="Course image"  width="300" height="300" priority="true" />
+        <img class="image" [ngSrc]="course.images[0] || ''" alt="Course image"  width="300" height="300" priority="true"/>
       </div>
     </div>
     <div class="col">
@@ -18,7 +18,7 @@
         <div class="title">Course Status</div>
         <mat-form-field class="w-100">
           <mat-select formControlName="status">
-            <mat-option  *ngFor="let status of courseStatus; trackBy: trackBy"
+            <mat-option  *ngFor="let status of courseStatus"
                          [value]="status"><span class="col-name">{{status}}</span></mat-option>
           </mat-select>
         </mat-form-field>

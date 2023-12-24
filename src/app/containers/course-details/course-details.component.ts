@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder} from '@angular/forms';
 import { CoursesService } from '../../services/courses.service';
 import { take } from 'rxjs';
 import { CourseDetailsType } from '../../models/course-details.type';
@@ -17,11 +17,16 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 })
 export class CourseDetailsComponent implements OnInit {
   courseId: number;
-  courseForm: FormGroup;
   course: CourseDetailsType;
   instructors: InstructorsType[];
   courseStatus = [CourseStatusEnums.draft, CourseStatusEnums.published];
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
+  defaultInstructor: InstructorsType = {name: '', image: ''};
+  courseForm = this.fb.group({
+    name: [''],
+    status: [''],
+    instructors: [[this.defaultInstructor]]
+  });
 
   constructor(
     public activeRoute: ActivatedRoute,
@@ -48,16 +53,16 @@ export class CourseDetailsComponent implements OnInit {
   }
 
   private _initForm(course: CourseDetailsType) {
-      this.courseForm = this.fb.group({
-        name: [course.name],
-        status: [course.status],
-        instructors: [course.instructors]
-      });
+    this.courseForm.patchValue({
+        name: course.name,
+        status: course.status,
+        instructors: course.instructors
+    });
       this.courseForm.disable();
   }
 
-  public trackBy(index: number): number {
-    return index;
+  public trackBy(index: number, item: InstructorsType): string {
+    return item.name;
   }
 
   back() {

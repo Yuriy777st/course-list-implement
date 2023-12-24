@@ -3,7 +3,7 @@ import { CourseItemType } from '../../models/course-item.type';
 import { CoursesService } from '../../services/courses.service';
 import { debounceTime, distinctUntilChanged, take } from 'rxjs';
 import { ColumnFilterType } from '../../models/column-filter.type';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 
 @Component({
@@ -22,7 +22,7 @@ export class CoursesListComponent implements OnInit{
   coursesList: CourseItemType[] = [];
   coursesListFiltered: CourseItemType[] = [];
 
-  form: FormGroup;
+  form = this.fb.group({ selectedProperty: [''], searchValue: [''] });
 
   constructor(
     public coursesService: CoursesService,
@@ -30,10 +30,6 @@ export class CoursesListComponent implements OnInit{
     private router: Router,
     private fb: FormBuilder,
     ) {
-    this.form = this.fb.group({
-      selectedProperty: [''],
-      searchValue: [''],
-    });
   }
 
   ngOnInit() {
@@ -57,13 +53,12 @@ export class CoursesListComponent implements OnInit{
     this.router.navigate(['courses', course.id]);
   }
 
-  public trackBy(index: number): number {
-    return index;
+  public trackBy(index: number, item: ColumnFilterType): string {
+    return item.column;
   }
 
   applyFilters(): void {
     const { selectedProperty, searchValue } = this.form.value;
-
     if (selectedProperty && searchValue) {
       this.coursesListFiltered = this.coursesList.filter((course: CourseItemType) =>{
         if (selectedProperty === 'instructors') {
