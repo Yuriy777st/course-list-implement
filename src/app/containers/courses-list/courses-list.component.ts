@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { CourseItemType } from '../../models/course-item.type';
 import { CoursesService } from '../../services/courses.service';
 import { debounceTime, distinctUntilChanged, take } from 'rxjs';
@@ -12,7 +12,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./courses-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CoursesListComponent implements OnInit{
+export class CoursesListComponent implements OnInit {
+  public coursesService = inject(CoursesService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+  private router = inject(Router);
+  private fb = inject(FormBuilder);
+
   displayedColumns = ['id', 'image', 'name', 'status'];
   filterCols: ColumnFilterType[] = [
     {name: 'Course Name', column: 'name'},
@@ -23,14 +28,6 @@ export class CoursesListComponent implements OnInit{
   coursesListFiltered: CourseItemType[] = [];
 
   form = this.fb.group({ selectedProperty: [''], searchValue: [''] });
-
-  constructor(
-    public coursesService: CoursesService,
-    private changeDetectorRef: ChangeDetectorRef,
-    private router: Router,
-    private fb: FormBuilder,
-    ) {
-  }
 
   ngOnInit() {
     this.coursesService.getCoursesList().pipe(
