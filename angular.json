@@ -68,10 +68,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "e-learn-dev:build:production"
+              "buildTarget": "e-learn-dev:build:production"
             },
             "development": {
-              "browserTarget": "e-learn-dev:build:development"
+              "buildTarget": "e-learn-dev:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -79,7 +79,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "e-learn-dev:build"
+            "buildTarget": "e-learn-dev:build"
           }
         },
         "test": {
