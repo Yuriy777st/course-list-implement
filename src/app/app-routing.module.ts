@@ -16,7 +16,7 @@ const routes: Routes = [
   },
   {
     path: 'courses/:id',
-    component: CourseDetailsComponent,
+    loadComponent: () => import('./containers/course-details/course-details.component').then(mod => mod.CourseDetailsComponent),
     pathMatch: 'full'
   },
 
