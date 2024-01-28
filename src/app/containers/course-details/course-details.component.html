@@ -1,52 +1,57 @@
 <div class="wrapper">
   <div class="back" (click)="back()">< Back</div>
-  <div *ngIf="course" class="content" [formGroup]="courseForm">
-    <div class="col">
-      <div class="w-100">
-        <div class="title">Course Name</div>
-        <mat-form-field class="w-100">
-          <input formControlName="name" matInput placeholder="Course name" >
-        </mat-form-field>
+  @if (course) {
+    <div class="content" [formGroup]="courseForm">
+      <div class="col">
+        <div class="w-100">
+          <div class="title">Course Name</div>
+          <mat-form-field class="w-100">
+            <input formControlName="name" matInput placeholder="Course name" >
+          </mat-form-field>
+        </div>
+        <div class="w-100">
+          <div class="title">Course Card Image</div>
+          <img class="image" [ngSrc]="course.images[0] || ''" alt="Course image"  width="300" height="300" priority="true"/>
+        </div>
       </div>
-      <div class="w-100">
-        <div class="title">Course Card Image</div>
-        <img class="image" [ngSrc]="course.images[0] || ''" alt="Course image"  width="300" height="300" priority="true"/>
+      <div class="col">
+        <div class="w-100">
+          <div class="title">Course Status</div>
+          <mat-form-field class="w-100">
+            <mat-select formControlName="status">
+              @for (status of courseStatus; track $index) {
+                <mat-option [value]="status"><span class="col-name">{{status}}</span></mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="w-100">
+          <div class="title">Instructor</div>
+          <mat-form-field class="chip-list w-100">
+            <mat-chip-grid #chipGrid aria-label="Enter instructor" formControlName="instructors">
+              @for (instructor of instructors; track instructor.name) {
+                <mat-chip-row
+                              (removed)="remove(instructor)"
+                              [editable]="true"
+                              (edited)="edit(instructor, $event)"
+                              [aria-description]="'press enter to edit ' + instructor.name">
+                  {{instructor.name}}
+                  <button matChipRemove [attr.aria-label]="'remove ' + instructor.name">
+                    <mat-icon>cancel</mat-icon>
+                  </button>
+                </mat-chip-row>
+              }
+
+              <input
+                [matChipInputFor]="chipGrid"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                [matChipInputAddOnBlur]="true"
+                (matChipInputTokenEnd)="add($event)"/>
+            </mat-chip-grid>
+          </mat-form-field>
+        </div>
       </div>
     </div>
-    <div class="col">
-      <div class="w-100">
-        <div class="title">Course Status</div>
-        <mat-form-field class="w-100">
-          <mat-select formControlName="status">
-            <mat-option  *ngFor="let status of courseStatus"
-                         [value]="status"><span class="col-name">{{status}}</span></mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div class="w-100">
-        <div class="title">Instructor</div>
-        <mat-form-field class="chip-list w-100">
-          <mat-chip-grid #chipGrid aria-label="Enter instructor" formControlName="instructors">
+  }
 
-            <mat-chip-row *ngFor="let instructor of instructors; trackBy: trackBy"
-              (removed)="remove(instructor)"
-              [editable]="true"
-              (edited)="edit(instructor, $event)"
-              [aria-description]="'press enter to edit ' + instructor.name">
-            {{instructor.name}}
-            <button matChipRemove [attr.aria-label]="'remove ' + instructor.name">
-              <mat-icon>cancel</mat-icon>
-            </button>
-          </mat-chip-row>
-
-            <input
-                   [matChipInputFor]="chipGrid"
-                   [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                   [matChipInputAddOnBlur]="true"
-                   (matChipInputTokenEnd)="add($event)"/>
-          </mat-chip-grid>
-        </mat-form-field>
-      </div>
-    </div>
-  </div>
 </div>

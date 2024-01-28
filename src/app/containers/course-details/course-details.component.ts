@@ -77,10 +77,6 @@ export class CourseDetailsComponent implements OnInit {
       this.courseForm.disable();
   }
 
-  public trackBy(index: number, item: InstructorsType): string {
-    return item.name;
-  }
-
   back() {
     this.router.navigate(['courses']);
   }
